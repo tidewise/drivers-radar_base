@@ -1,10 +1,9 @@
 #include <iostream>
-#include <radar_base/Dummy.hpp>
+#include <radar_base/Radar.hpp>
 
 int main(int argc, char** argv)
 {
-    radar_base::DummyClass dummyClass;
-    dummyClass.welcome();
+    radar_base::Radar radar;
 
     return 0;
 }
