@@ -9,5 +9,5 @@
   <depend package="base/cmake" />
   <depend package="base/types" />
 
-  <test_depend package="boost" />
+  <test_depend package="google-test" />
 </package>
