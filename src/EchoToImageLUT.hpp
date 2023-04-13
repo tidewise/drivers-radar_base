@@ -46,10 +46,6 @@ namespace radar_base {
 
         void updateImage(cv::Mat& image, int angle, int echo_index, int echo) const;
 
-        void updateAngle(cv::Mat& image, int angle, int echo_index, int echo) const;
-
-        void clearBeamEndAtImage(cv::Mat& image, int angle, int echo_index) const;
-
         void linearizeRawTable(RawTable const& table);
 
         cv::Point fetchEntry(int angle, int echo_index) const;
