@@ -10,6 +10,8 @@ struct RadarTest : public ::testing::Test {
     float range = 2;
     uint16_t sweep_length = 10;
     base::Angle step_size = base::Angle::fromRad((2.0 / 8192.0) * 2 * M_PI);
+    base::Angle heading_n2 = base::Angle::fromRad(2.74888);
+    base::Angle heading_n1 = base::Angle::fromRad(2.75042);
     base::Angle heading_0 = base::Angle::fromRad(2.75196);
     base::Angle heading_1 = base::Angle::fromRad(2.7535);
     base::Angle heading_2 = base::Angle::fromRad(2.75503);
@@ -54,4 +56,17 @@ TEST_F(RadarTest, it_crashes_with_different_range)
     radar.addEcho(range, sweep_length, step_size, heading_0, echo);
     ASSERT_THROW(radar.addEcho(range + 2.0, sweep_length, step_size, heading_1, echo),
         std::runtime_error);
+}
+
+TEST_F(RadarTest, verify_next_angle_works_as_expected)
+{
+    Radar new_radar;
+    ASSERT_EQ(new_radar.verifyNextAngle(heading_0), true);
+    new_radar.addEcho(range, sweep_length, step_size, heading_0, echo);
+    ASSERT_EQ(new_radar.verifyNextAngle(heading_2), false);
+    ASSERT_EQ(new_radar.verifyNextAngle(heading_1), true);
+
+    new_radar.step_angle = base::Angle::fromRad(-step_size.getRad());
+    ASSERT_EQ(new_radar.verifyNextAngle(heading_n1), true);
+    ASSERT_EQ(new_radar.verifyNextAngle(heading_n2), false);
 }
