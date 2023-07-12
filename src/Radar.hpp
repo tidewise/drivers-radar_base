@@ -1,9 +1,9 @@
 #ifndef __RADAR_BASE_RADAR_HPP__
 #define __RADAR_BASE_RADAR_HPP__
 
-#include <base/Time.hpp>
-#include <base/Float.hpp>
 #include <base/Angle.hpp>
+#include <base/Float.hpp>
+#include <base/Time.hpp>
 #include <vector>
 namespace radar_base {
     struct Radar {
@@ -25,7 +25,7 @@ namespace radar_base {
             base::Time timestamp);
 
         ~Radar();
-
+        bool verifyNextAngle(base::Angle angle);
         void addEcho(float range,
             uint16_t sweep_length,
             base::Angle step_angle,
