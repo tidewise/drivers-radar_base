@@ -48,17 +48,18 @@ void Radar::addEcho(float range,
             to_string(this->sweep_length) + " Current:" + to_string(sweep_length));
     }
     else if (!this->step_angle.isApprox(step_angle)) {
-        throw runtime_error(
-            "Current step angle differs from expected value! Expected: " +
-            to_string(this->step_angle.getRad()) +
-            " Current:" + to_string(step_angle.getRad()));
+        throw runtime_error("Current step angle differs from expected value! Expected: " +
+                            to_string(this->step_angle.getRad()) +
+                            " Current:" + to_string(step_angle.getRad()));
     }
     else {
-        Angle expected = start_heading + step_angle * sweep_timestamps.size();
-        if (!expected.isApprox(heading)) {
-            throw runtime_error("Current angle differs from expected! Expected: " +
-                                to_string(expected.getRad()) +
-                                " Current:" + to_string(heading.getRad()));
+        if (!verifyNextAngle(heading)) {
+            Angle expected = start_heading + step_angle * sweep_timestamps.size();
+            throw runtime_error(
+                "Current angle differs from expected! Expected: " +
+                to_string(
+                    (start_heading + step_angle * sweep_timestamps.size()).getRad()) +
+                " Current:" + to_string(heading.getRad()));
         }
     }
     sweep_timestamps.push_back(Time::now());
@@ -72,4 +73,9 @@ bool Radar::verifyNextAngle(Angle angle)
     }
     Angle expected = start_heading + step_angle * (sweep_timestamps.size());
     return expected.isApprox(angle);
+}
+
+std::size_t Radar::size()
+{
+    return sweep_timestamps.size();
 }

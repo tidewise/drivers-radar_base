@@ -26,6 +26,7 @@ namespace radar_base {
 
         ~Radar();
         bool verifyNextAngle(base::Angle angle);
+        std::size_t size();
         void addEcho(float range,
             uint16_t sweep_length,
             base::Angle step_angle,
