@@ -54,7 +54,6 @@ void Radar::addEcho(float range,
     }
     else {
         if (!verifyNextAngle(heading)) {
-            Angle expected = start_heading + step_angle * sweep_timestamps.size();
             throw runtime_error(
                 "Current angle differs from expected! Expected: " +
                 to_string(
