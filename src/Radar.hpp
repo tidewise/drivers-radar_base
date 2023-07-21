@@ -8,11 +8,11 @@
 namespace radar_base {
     struct Radar {
     public:
-        base::Time timestamp;
         float range = base::unknown<float>();
+        uint16_t sweep_length = base::unknown<uint16_t>();
         base::Angle step_angle = base::Angle::unknown();
         base::Angle start_heading = base::Angle::unknown();
-        uint16_t sweep_length = base::unknown<uint16_t>();
+        base::Time timestamp;
         std::vector<base::Time> sweep_timestamps;
         std::vector<uint8_t> sweep_data;
 
