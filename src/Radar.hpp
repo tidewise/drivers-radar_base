@@ -14,6 +14,7 @@ namespace radar_base {
         base::Angle start_heading = base::Angle::unknown();
         base::Time timestamp;
         std::vector<base::Time> sweep_timestamps;
+        std::vector<base::Angle> step_heading_correction;
         std::vector<uint8_t> sweep_data;
 
         Radar();
@@ -31,6 +32,7 @@ namespace radar_base {
             uint16_t sweep_length,
             base::Angle step_angle,
             base::Angle heading,
+            base::Angle heading_correction,
             uint8_t* echo_data);
     };
 } // namespaces

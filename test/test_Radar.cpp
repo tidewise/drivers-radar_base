@@ -15,16 +15,17 @@ struct RadarTest : public ::testing::Test {
     base::Angle heading_0 = base::Angle::fromRad(2.75196);
     base::Angle heading_1 = base::Angle::fromRad(2.7535);
     base::Angle heading_2 = base::Angle::fromRad(2.75503);
+    base::Angle heading_correction = base::Angle::fromRad(0);
 };
 
 TEST_F(RadarTest, it_creates_an_object_correctly)
 {
     ASSERT_EQ(radar.verifyNextAngle(heading_0), true);
-    radar.addEcho(range, sweep_length, step_size, heading_0, echo);
+    radar.addEcho(range, sweep_length, step_size, heading_0, heading_correction, echo);
     ASSERT_EQ(radar.verifyNextAngle(heading_1), true);
-    radar.addEcho(range, sweep_length, step_size, heading_1, echo);
+    radar.addEcho(range, sweep_length, step_size, heading_1, heading_correction, echo);
     ASSERT_EQ(radar.verifyNextAngle(heading_2), true);
-    radar.addEcho(range, sweep_length, step_size, heading_2, echo);
+    radar.addEcho(range, sweep_length, step_size, heading_2, heading_correction, echo);
     uint8_t echo_result[3 * sizeof(echo)];
     memcpy(echo_result, echo, sizeof(echo));
     memcpy(echo_result + sizeof(echo), echo, sizeof(echo));
@@ -42,22 +43,37 @@ TEST_F(RadarTest, it_creates_an_object_correctly)
 TEST_F(RadarTest, it_crashes_with_different_step_size)
 {
     base::Angle step_size2 = base::Angle::fromRad((1.0 / 8192.0) * 2 * M_PI);
-    radar.addEcho(range, sweep_length, step_size, heading_0, echo);
-    ASSERT_THROW(radar.addEcho(range, sweep_length, step_size2, heading_1, echo),
+    radar.addEcho(range, sweep_length, step_size, heading_0, heading_correction, echo);
+    ASSERT_THROW(radar.addEcho(range,
+                     sweep_length,
+                     step_size2,
+                     heading_1,
+                     heading_correction,
+                     echo),
         std::runtime_error);
 }
 
 TEST_F(RadarTest, it_crashes_with_different_sweep_length)
 {
-    radar.addEcho(range, sweep_length, step_size, heading_0, echo);
-    ASSERT_THROW(radar.addEcho(range, sweep_length + 2, step_size, heading_1, echo),
+    radar.addEcho(range, sweep_length, step_size, heading_0, heading_correction, echo);
+    ASSERT_THROW(radar.addEcho(range,
+                     sweep_length + 2,
+                     step_size,
+                     heading_1,
+                     heading_correction,
+                     echo),
         std::runtime_error);
 }
 
 TEST_F(RadarTest, it_crashes_with_different_range)
 {
-    radar.addEcho(range, sweep_length, step_size, heading_0, echo);
-    ASSERT_THROW(radar.addEcho(range + 2.0, sweep_length, step_size, heading_1, echo),
+    radar.addEcho(range, sweep_length, step_size, heading_0, heading_correction, echo);
+    ASSERT_THROW(radar.addEcho(range + 2.0,
+                     sweep_length,
+                     step_size,
+                     heading_1,
+                     heading_correction,
+                     echo),
         std::runtime_error);
 }
 
@@ -72,18 +88,23 @@ TEST_F(RadarTest,
 {
     Radar new_radar;
     ASSERT_EQ(new_radar.verifyNextAngle(heading_0), true);
-    new_radar.addEcho(range, sweep_length, step_size, heading_0, echo);
+    new_radar
+        .addEcho(range, sweep_length, step_size, heading_0, heading_correction, echo);
     ASSERT_EQ(new_radar.verifyNextAngle(heading_1), true);
-    new_radar.addEcho(range, sweep_length, step_size, heading_1, echo);
+    new_radar
+        .addEcho(range, sweep_length, step_size, heading_1, heading_correction, echo);
 }
 TEST_F(RadarTest,
     it_crashes_if_the_angle_is_not_within_size_times_step_from_the_first_with_a_positive_step_angle)
 {
     Radar new_radar;
     ASSERT_EQ(new_radar.verifyNextAngle(heading_0), true);
-    new_radar.addEcho(range, sweep_length, step_size, heading_0, echo);
+    new_radar
+        .addEcho(range, sweep_length, step_size, heading_0, heading_correction, echo);
     ASSERT_EQ(new_radar.verifyNextAngle(heading_2), false);
-    ASSERT_THROW(new_radar.addEcho(range, sweep_length, step_size, heading_2, echo),
+    ASSERT_THROW(
+        new_radar
+            .addEcho(range, sweep_length, step_size, heading_2, heading_correction, echo),
         std::runtime_error);
 }
 
@@ -96,12 +117,14 @@ TEST_F(RadarTest,
         sweep_length,
         base::Angle::fromRad(-step_size.getRad()),
         heading_0,
+        heading_correction,
         echo);
     ASSERT_EQ(new_radar.verifyNextAngle(heading_n1), true);
     new_radar.addEcho(range,
         sweep_length,
         base::Angle::fromRad(-step_size.getRad()),
         heading_n1,
+        heading_correction,
         echo);
 }
 
@@ -114,12 +137,14 @@ TEST_F(RadarTest,
         sweep_length,
         base::Angle::fromRad(-step_size.getRad()),
         heading_0,
+        heading_correction,
         echo);
     ASSERT_EQ(new_radar.verifyNextAngle(heading_n2), false);
     ASSERT_THROW(new_radar.addEcho(range,
                      sweep_length,
                      base::Angle::fromRad(-step_size.getRad()),
                      heading_n2,
+                     heading_correction,
                      echo),
         std::runtime_error);
 }

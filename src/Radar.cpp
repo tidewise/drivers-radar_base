@@ -29,6 +29,7 @@ void Radar::addEcho(float range,
     uint16_t sweep_length,
     Angle step_angle,
     Angle heading,
+    Angle heading_correction,
     uint8_t* echo_data)
 {
     if (timestamp.isNull()) {
@@ -62,6 +63,7 @@ void Radar::addEcho(float range,
         }
     }
     sweep_timestamps.push_back(Time::now());
+    step_heading_correction.push_back(heading_correction);
     sweep_data.insert(sweep_data.end(), echo_data, echo_data + sweep_length);
 }
 
