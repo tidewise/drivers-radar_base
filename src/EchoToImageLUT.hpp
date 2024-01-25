@@ -44,7 +44,11 @@ namespace radar_base {
         EchoToImageLUT(int num_angles, int sweep_size, float beam_width, int window_size);
         ~EchoToImageLUT() = default;
 
-        void updateImage(cv::Mat& image, int angle, int echo_index, int echo) const;
+        void updateImage(cv::Mat& image,
+            int angle,
+            int echo_index,
+            int echo,
+            bool force_write = false) const;
 
         void linearizeRawTable(RawTable const& table);
 

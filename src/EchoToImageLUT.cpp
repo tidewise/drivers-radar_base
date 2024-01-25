@@ -97,7 +97,11 @@ void EchoToImageLUT::addRawLUTEntry(RawTable& table,
     table[angle * sweep_size + echo_index].push_back(p);
 }
 
-void EchoToImageLUT::updateImage(Mat& image, int angle, int echo_index, int echo) const
+void EchoToImageLUT::updateImage(Mat& image,
+    int angle,
+    int echo_index,
+    int echo,
+    bool force_write) const
 {
     if (echo < 0) {
         echo = 0;
@@ -109,7 +113,8 @@ void EchoToImageLUT::updateImage(Mat& image, int angle, int echo_index, int echo
         auto p = m_data[id];
 
         auto& current = image.at<Vec3b>(p);
-        auto v = std::max<int>(current[0], echo);
+
+        auto v = force_write ? echo : std::max<int>(current[0], echo);
         current = Vec3b(v, v, v);
     }
 }
