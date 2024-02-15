@@ -39,7 +39,7 @@ namespace radar_base {
          *
          * @param radar_echo the current radar echo to be saved
          * @param yaw_correction the yaw correction to be applied into this radar echo
-         * @param world_echoes the vector representing a full radar rotation to be updated
+         * @param world_echoes the serialized full radar rotation to be updated
          */
         static void updateEchoes(Radar const& radar_echo,
             base::Angle const& yaw_correction,

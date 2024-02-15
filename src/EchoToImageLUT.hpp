@@ -50,7 +50,7 @@ namespace radar_base {
         /**
          * Checks if provided configuration matches the LUT.
          *
-         * @param num_angles Amount of samples contained in a radar revolution.
+         * @param num_angles Amount of sweeps contained in a radar revolution.
          * @param sweep_size Number of measurements inside a single sweep.
          * @param beam_width Angle between the 3dB half power points on the main lobe.
          * @param window_size The param will create a squared frame.
@@ -67,8 +67,6 @@ namespace radar_base {
          * Draws image based on a vector representing the full rotation of the radar.
          *
          * @param world_echoes the vector representing a full radar rotation
-         * @param radar_sweep_size the radar sweep size
-         * @param lut the echo to image look up table
          * @param radar_frame the frame where the radar will be drawn in
          */
         void drawImageFromEchoes(std::vector<uint8_t> const& world_echoes,
