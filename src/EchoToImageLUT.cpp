@@ -127,9 +127,6 @@ void EchoToImageLUT::drawImageFromEchoes(std::vector<uint8_t> const& world_echoe
     cv::Mat& radar_frame)
 {
     for (long i = 0; i < static_cast<long>(world_echoes.size()); i++) {
-        updateImage(radar_frame,
-            i / m_sweep_size,
-            i % m_sweep_size,
-            world_echoes.at(i));
+        updateImage(radar_frame, i / m_sweep_size, i % m_sweep_size, world_echoes.at(i));
     }
 }
