@@ -13,6 +13,9 @@ namespace radar_base {
         std::vector<int> m_data_index;
 
         int m_sweep_size;
+        int m_num_angles;
+        float m_beam_width;
+        int m_window_size;
 
         static int normalizeAngle(int angle, int num_angles);
 
@@ -28,8 +31,6 @@ namespace radar_base {
             int num_angles,
             cv::Point2i const& p);
 
-        void setup(int sweep_size, int window_size, int num_angles, float beam_width);
-
     public:
         EchoToImageLUT() = delete;
 
@@ -44,13 +45,32 @@ namespace radar_base {
         EchoToImageLUT(int num_angles, int sweep_size, float beam_width, int window_size);
         ~EchoToImageLUT() = default;
 
-        void updateImage(cv::Mat& image,
-            int angle,
-            int echo_index,
-            int echo,
-            bool force_write = false) const;
+        void updateImage(cv::Mat& image, int angle, int echo_index, int echo) const;
+
+        /**
+         * Checks if provided configuration matches the LUT.
+         *
+         * @param num_angles Amount of sweeps contained in a radar revolution.
+         * @param sweep_size Number of measurements inside a single sweep.
+         * @param beam_width Angle between the 3dB half power points on the main lobe.
+         * @param window_size The param will create a squared frame.
+         * @return whether the LUT configuration matches the given parameters
+         */
+        bool hasMatchingConfiguration(int num_angles,
+            int sweep_size,
+            float beam_width,
+            int window_size);
 
         void linearizeRawTable(RawTable const& table);
+
+        /**
+         * Draws image based on a vector representing the full rotation of the radar.
+         *
+         * @param world_echoes the vector representing a full radar rotation
+         * @param radar_frame the frame where the radar will be drawn in
+         */
+        void drawImageFromEchoes(std::vector<uint8_t> const& world_echoes,
+            cv::Mat& radar_frame);
 
         cv::Point fetchEntry(int angle, int echo_index) const;
     };

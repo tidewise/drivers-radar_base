@@ -6,7 +6,7 @@ using namespace radar_base;
 using namespace cv;
 using namespace std;
 
-int discretizeAngle(double theta_rad, int num_angles)
+static int discretizeAngle(double theta_rad, int num_angles)
 {
     double angle_step = 2 * M_PI / num_angles;
     return round(theta_rad / angle_step);
@@ -17,18 +17,12 @@ EchoToImageLUT::EchoToImageLUT(int num_angles,
     float beam_width,
     int window_size)
     : m_sweep_size(sweep_size)
-{
-    setup(sweep_size, window_size, num_angles, beam_width);
-}
-
-void EchoToImageLUT::setup(int sweep_size,
-    int window_size,
-    int num_angles,
-    float beam_width)
+    , m_num_angles(num_angles)
+    , m_beam_width(beam_width)
+    , m_window_size(window_size)
 {
     auto raw_data = computeRawLUTTable(sweep_size, window_size, num_angles, beam_width);
     linearizeRawTable(raw_data);
-    m_sweep_size = sweep_size;
 }
 
 vector<vector<Point>> EchoToImageLUT::computeRawLUTTable(int sweep_size,
@@ -97,11 +91,7 @@ void EchoToImageLUT::addRawLUTEntry(RawTable& table,
     table[angle * sweep_size + echo_index].push_back(p);
 }
 
-void EchoToImageLUT::updateImage(Mat& image,
-    int angle,
-    int echo_index,
-    int echo,
-    bool force_write) const
+void EchoToImageLUT::updateImage(Mat& image, int angle, int echo_index, int echo) const
 {
     if (echo < 0) {
         echo = 0;
@@ -113,8 +103,7 @@ void EchoToImageLUT::updateImage(Mat& image,
         auto p = m_data[id];
 
         auto& current = image.at<Vec3b>(p);
-
-        auto v = force_write ? echo : std::max<int>(current[0], echo);
+        auto v = std::max<int>(current[0], echo);
         current = Vec3b(v, v, v);
     }
 }
@@ -123,4 +112,21 @@ Point EchoToImageLUT::fetchEntry(int angle, int echo_index_in_sweep) const
 {
     auto data_i = angle * m_sweep_size + echo_index_in_sweep;
     return m_data[m_data_index[data_i]];
+}
+
+bool EchoToImageLUT::hasMatchingConfiguration(int num_angles,
+    int sweep_size,
+    float beam_width,
+    int window_size)
+{
+    return num_angles == m_num_angles && sweep_size == m_sweep_size &&
+           beam_width == m_beam_width && window_size == m_window_size;
+}
+
+void EchoToImageLUT::drawImageFromEchoes(std::vector<uint8_t> const& world_echoes,
+    cv::Mat& radar_frame)
+{
+    for (long i = 0; i < static_cast<long>(world_echoes.size()); i++) {
+        updateImage(radar_frame, i / m_sweep_size, i % m_sweep_size, world_echoes.at(i));
+    }
 }

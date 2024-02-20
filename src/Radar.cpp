@@ -78,3 +78,30 @@ std::size_t Radar::size()
 {
     return sweep_timestamps.size();
 }
+
+void Radar::updateEchoes(Radar const& radar_echo,
+    base::Angle const& yaw_correction,
+    std::vector<uint8_t>& world_echoes)
+{
+    double angle = (radar_echo.start_heading).getRad() + yaw_correction.getRad();
+    if (angle < 0) {
+        angle = 2 * M_PI + angle;
+    }
+
+    int start_angle_unit = round(angle / abs(radar_echo.step_angle.getRad()));
+    int angles_in_a_frame = round(2 * M_PI / abs(radar_echo.step_angle.getRad()));
+    int signal = copysign(1, radar_echo.step_angle.getRad());
+    for (size_t current_angle = 0; current_angle < radar_echo.sweep_timestamps.size();
+         current_angle++) {
+
+        int sweep_global_angular_position =
+            (start_angle_unit + current_angle * signal) % angles_in_a_frame;
+        if (sweep_global_angular_position < 0) {
+            sweep_global_angular_position += angles_in_a_frame;
+        }
+        std::copy(radar_echo.sweep_data.begin() + current_angle * radar_echo.sweep_length,
+            radar_echo.sweep_data.begin() + (current_angle + 1) * radar_echo.sweep_length,
+            world_echoes.begin() +
+                radar_echo.sweep_length * sweep_global_angular_position);
+    }
+}

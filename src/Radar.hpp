@@ -32,6 +32,18 @@ namespace radar_base {
             base::Angle step_angle,
             base::Angle heading,
             uint8_t* echo_data);
+
+        /**
+         * Iterates over the sweeps of a radar echo saving them into the world echoes
+         * vector.
+         *
+         * @param radar_echo the current radar echo to be saved
+         * @param yaw_correction the yaw correction to be applied into this radar echo
+         * @param world_echoes the serialized full radar rotation to be updated
+         */
+        static void updateEchoes(Radar const& radar_echo,
+            base::Angle const& yaw_correction,
+            std::vector<uint8_t>& world_echoes);
     };
 } // namespaces
 
