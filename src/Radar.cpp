@@ -17,7 +17,7 @@ Radar::Radar(float range,
     , sweep_length(sweep_length)
     , step_angle(step_angle)
     , start_heading(start_heading)
-    , timestamp(timestamp)
+    , time(timestamp)
 {
 }
 
@@ -31,8 +31,8 @@ void Radar::addEcho(float range,
     Angle heading,
     uint8_t* echo_data)
 {
-    if (timestamp.isNull()) {
-        timestamp = Time::now();
+    if (time.isNull()) {
+        time = Time::now();
         this->range = range;
         this->sweep_length = sweep_length;
         this->step_angle = step_angle;
@@ -67,7 +67,7 @@ void Radar::addEcho(float range,
 
 bool Radar::verifyNextAngle(Angle angle)
 {
-    if (timestamp.isNull()) {
+    if (time.isNull()) {
         return true;
     }
     Angle expected = start_heading + step_angle * (sweep_timestamps.size());

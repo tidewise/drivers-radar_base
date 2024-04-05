@@ -12,7 +12,7 @@ namespace radar_base {
         uint16_t sweep_length = base::unknown<uint16_t>();
         base::Angle step_angle = base::Angle::unknown();
         base::Angle start_heading = base::Angle::unknown();
-        base::Time timestamp;
+        base::Time time;
         std::vector<base::Time> sweep_timestamps;
         std::vector<uint8_t> sweep_data;
 
@@ -22,7 +22,7 @@ namespace radar_base {
             uint16_t sweep_length,
             base::Angle step_angle,
             base::Angle start_heading,
-            base::Time timestamp);
+            base::Time time);
 
         ~Radar();
         bool verifyNextAngle(base::Angle angle);
