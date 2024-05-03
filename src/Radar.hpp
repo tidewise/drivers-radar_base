@@ -30,7 +30,7 @@ namespace radar_base {
         void addEcho(float range,
             uint16_t sweep_length,
             base::Angle step_angle,
-            base::Angle heading,
+            base::Angle echo_angle2radar,
             uint8_t* echo_data);
 
         /**
