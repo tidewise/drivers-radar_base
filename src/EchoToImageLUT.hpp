@@ -33,6 +33,7 @@ namespace radar_base {
 
     public:
         EchoToImageLUT() = delete;
+        std::vector<cv::Point> getPixelsFor(int angle_unit, int sweep_idx);
 
         /**
          * Constructor that creates a LUT matrix based on radar echoes.

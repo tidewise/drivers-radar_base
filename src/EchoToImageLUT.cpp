@@ -130,3 +130,16 @@ void EchoToImageLUT::drawImageFromEchoes(std::vector<uint8_t> const& world_echoe
         updateImage(radar_frame, i / m_sweep_size, i % m_sweep_size, world_echoes.at(i));
     }
 }
+
+std::vector<cv::Point> EchoToImageLUT::getPixelsFor(int angle_unit,
+    int sweep_idx)
+{
+    int point_idx = m_data_index[angle_unit * m_sweep_size + sweep_idx];
+    int next_point_idx = m_data_index[angle_unit * m_sweep_size + sweep_idx + 1];
+    std::vector<Point> points;
+    for (unsigned int i = point_idx; i < next_point_idx; i++)
+    {
+        points.push_back(m_data[i]);
+    }
+    return points;
+}
