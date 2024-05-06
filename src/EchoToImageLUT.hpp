@@ -40,10 +40,11 @@ namespace radar_base {
          *
          * @param angle_idx The angle index
          * @param sweep_idx The sweep index
-         * @return std::pair<std::vector<cv::Point>::iterator,
-         * std::vector<cv::Point>::iterator>
+         * @return std::pair<std::vector<cv::Point>::const_iterator,
+         * std::vector<cv::Point>::const_iterator>
          */
-        std::pair<std::vector<cv::Point>::iterator, std::vector<cv::Point>::iterator>
+        std::pair<std::vector<cv::Point>::const_iterator,
+            std::vector<cv::Point>::const_iterator>
         getPixels(int angle_idx, int sweep_idx);
         /**
          * Constructor that creates a LUT matrix based on radar echoes.

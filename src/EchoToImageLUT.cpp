@@ -1,6 +1,6 @@
 #include "EchoToImageLUT.hpp"
 #include <algorithm>
-#include <iostream>
+#include <utility>
 
 using namespace radar_base;
 using namespace cv;
@@ -131,13 +131,11 @@ void EchoToImageLUT::drawImageFromEchoes(std::vector<uint8_t> const& world_echoe
     }
 }
 
-pair<std::vector<Point>::iterator, std::vector<Point>::iterator> EchoToImageLUT::
+pair<vector<Point>::const_iterator, vector<Point>::const_iterator> EchoToImageLUT::
     getPixels(int angle_idx, int sweep_idx)
 {
     int initial_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx];
     int final_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx + 1] - 1;
-    pair<std::vector<Point>::iterator, std::vector<Point>::iterator> iterators(
-        m_data.begin() + initial_point_idx,
-        m_data.begin() + final_point_idx);
-    return iterators;
+    return std::make_pair(m_data.cbegin() + initial_point_idx,
+        m_data.cbegin() + final_point_idx);
 }
