@@ -33,8 +33,18 @@ namespace radar_base {
 
     public:
         EchoToImageLUT() = delete;
-        std::vector<cv::Point> getPixelsFor(int angle_unit, int sweep_idx);
-
+        /**
+         * @brief Returns a pair of iterators pointing to the initial and the final pixel
+         * in a radar echo dot represented by an angle index and a sweep index at the
+         * echoes to image look-up table
+         *
+         * @param angle_idx The angle index
+         * @param sweep_idx The sweep index
+         * @return std::pair<std::vector<cv::Point>::iterator,
+         * std::vector<cv::Point>::iterator>
+         */
+        std::pair<std::vector<cv::Point>::iterator, std::vector<cv::Point>::iterator>
+        getPixels(int angle_idx, int sweep_idx);
         /**
          * Constructor that creates a LUT matrix based on radar echoes.
          * @brief Constructor.
