@@ -28,7 +28,7 @@ Radar::~Radar()
 void Radar::addEcho(float range,
     uint16_t sweep_length,
     Angle step_angle,
-    Angle heading,
+    Angle echo_angle2radar,
     uint8_t* echo_data)
 {
     if (timestamp.isNull()) {
@@ -36,7 +36,7 @@ void Radar::addEcho(float range,
         this->range = range;
         this->sweep_length = sweep_length;
         this->step_angle = step_angle;
-        this->start_heading = heading;
+        this->start_heading = echo_angle2radar;
     }
     else if (this->range != range) {
         throw runtime_error("Current range differs from expected value! Expected: " +
@@ -53,12 +53,12 @@ void Radar::addEcho(float range,
                             " Current:" + to_string(step_angle.getRad()));
     }
     else {
-        if (!verifyNextAngle(heading)) {
+        if (!verifyNextAngle(echo_angle2radar)) {
             throw runtime_error(
                 "Current angle differs from expected! Expected: " +
                 to_string(
                     (start_heading + step_angle * sweep_timestamps.size()).getRad()) +
-                " Current:" + to_string(heading.getRad()));
+                " Current:" + to_string(echo_angle2radar.getRad()));
         }
     }
     sweep_timestamps.push_back(Time::now());
