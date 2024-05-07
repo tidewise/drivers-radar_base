@@ -45,7 +45,7 @@ namespace radar_base {
          */
         std::pair<std::vector<cv::Point>::const_iterator,
             std::vector<cv::Point>::const_iterator>
-        getPixels(int angle_idx, int sweep_idx);
+        getPixels(int angle_idx, int sweep_idx) const;
         /**
          * Constructor that creates a LUT matrix based on radar echoes.
          * @brief Constructor.
