@@ -45,6 +45,12 @@ namespace radar_base {
          */
         std::pair<size_t, size_t> getPixels(int angle_idx, int sweep_idx) const;
         /**
+         * @brief Returns the echoes to image look-up table
+         *
+         * @return std::vector<cv::Point>
+         */
+        std::vector<cv::Point> getLUT();
+        /**
          * Constructor that creates a LUT matrix based on radar echoes.
          * @brief Constructor.
          * @param num_angles Amount of samples contained in a radar revolution.

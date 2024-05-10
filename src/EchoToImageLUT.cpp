@@ -137,4 +137,8 @@ pair<size_t, size_t> EchoToImageLUT::getPixels(int angle_idx, int sweep_idx) con
     size_t final_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx + 1] - 1;
     return std::make_pair(initial_point_idx, final_point_idx);
 }
+
+std::vector<cv::Point> EchoToImageLUT::getLUT()
+{
+    return m_data;
 }
