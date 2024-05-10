@@ -131,11 +131,10 @@ void EchoToImageLUT::drawImageFromEchoes(std::vector<uint8_t> const& world_echoe
     }
 }
 
-pair<vector<Point>::const_iterator, vector<Point>::const_iterator> EchoToImageLUT::
-    getPixels(int angle_idx, int sweep_idx) const
+pair<size_t, size_t> EchoToImageLUT::getPixels(int angle_idx, int sweep_idx) const
 {
-    int initial_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx];
-    int final_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx + 1] - 1;
-    return std::make_pair(m_data.cbegin() + initial_point_idx,
-        m_data.cbegin() + final_point_idx);
+    size_t initial_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx];
+    size_t final_point_idx = m_data_index[angle_idx * m_sweep_size + sweep_idx + 1] - 1;
+    return std::make_pair(initial_point_idx, final_point_idx);
+}
 }
