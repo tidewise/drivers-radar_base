@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 #include <radar_base/EchoToImageLUT.hpp>
 
-#include <iostream>
-
 using namespace radar_base;
 using namespace std;
 

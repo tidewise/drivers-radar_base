@@ -96,13 +96,9 @@ void EchoToImageLUT::updateImage(Mat& image, int angle, int echo_index, int echo
     if (echo < 0) {
         echo = 0;
     }
-    int data_i = angle * m_sweep_size + echo_index;
-    auto begin = m_data_index[data_i];
-    auto end = m_data_index[data_i + 1];
-    for (auto id = begin; id < end; id++) {
-        auto p = m_data[id];
-
-        auto& current = image.at<Vec3b>(p);
+    auto its = getPixels(angle, echo_index);
+    for (auto [pixel, last_pixel] = its; pixel != last_pixel; pixel++) {
+        auto& current = image.at<Vec3b>(*pixel);
         auto v = std::max<int>(current[0], echo);
         current = Vec3b(v, v, v);
     }
@@ -132,9 +128,9 @@ void EchoToImageLUT::drawImageFromEchoes(std::vector<uint8_t> const& world_echoe
 }
 
 pair<vector<Point>::const_iterator, vector<Point>::const_iterator> EchoToImageLUT::
-    getPixels(int angle_idx, int sweep_idx) const
+    getPixels(int angle_idx, int cell_idx) const
 {
-    int pixels_begin = m_data_index[angle_idx * m_sweep_size + sweep_idx];
-    int pixels_end = m_data_index[angle_idx * m_sweep_size + sweep_idx + 1];
+    int pixels_begin = m_data_index[angle_idx * m_sweep_size + cell_idx];
+    int pixels_end = m_data_index[angle_idx * m_sweep_size + cell_idx + 1];
     return std::make_pair(m_data.cbegin() + pixels_begin, m_data.cbegin() + pixels_end);
 }
