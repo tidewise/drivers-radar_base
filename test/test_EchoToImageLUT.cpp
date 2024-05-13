@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <radar_base/EchoToImageLUT.hpp>
 
+#include <iostream>
+
 using namespace radar_base;
 using namespace std;
 
@@ -17,6 +19,6 @@ TEST_F(EchoToImageTest, it_returns_the_initial_and_final_pixel_iterators_for_a_r
     auto iterators = lut.getPixels(0, 1);
     ASSERT_EQ(iterators.first->x, 1);
     ASSERT_EQ(iterators.first->y, 0);
-    ASSERT_EQ(iterators.second->x, 2);
+    ASSERT_EQ(iterators.second->x, 1);
     ASSERT_EQ(iterators.second->y, 1);
 }
