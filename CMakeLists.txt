@@ -6,7 +6,7 @@ project(radar_base
         DESCRIPTION "Common implementation for Radar management")
 find_package(Rock)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 rock_init()

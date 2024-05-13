@@ -34,12 +34,13 @@ namespace radar_base {
     public:
         EchoToImageLUT() = delete;
         /**
-         * @brief Returns a pair of iterators pointing to the initial and the final pixel
-         * in a radar echo dot represented by an angle index and a sweep index at the
-         * echoes to image look-up table
+         * @brief Returns a pair of constant iterators defining a range of pixels in a
+         * radar echo dot, determined by an angle index and a cell index, at the echoes
+         * to image look-up table
+         *
          *
          * @param angle_idx The angle index
-         * @param sweep_idx The sweep index
+         * @param cell_idx The cell index
          * @return std::pair<std::vector<cv::Point>::const_iterator,
          * std::vector<cv::Point>::const_iterator>
          */
