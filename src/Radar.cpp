@@ -105,3 +105,10 @@ void Radar::updateEchoes(Radar const& radar_echo,
                 radar_echo.sweep_length * sweep_global_angular_position);
     }
 }
+
+bool Radar::allZero() const
+{
+    return !std::any_of(sweep_data.begin(), sweep_data.end(), [](auto v) {
+        return v != 0;
+    });
+}

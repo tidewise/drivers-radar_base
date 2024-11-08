@@ -44,6 +44,8 @@ namespace radar_base {
         static void updateEchoes(Radar const& radar_echo,
             base::Angle const& yaw_correction,
             std::vector<uint8_t>& world_echoes);
+
+        bool allZero() const;
     };
 } // namespaces
 

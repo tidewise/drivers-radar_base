@@ -123,3 +123,13 @@ TEST_F(RadarTest,
                      echo),
         std::runtime_error);
 }
+
+TEST_F(RadarTest, it_checks_if_measurement_is_zero_or_not)
+{
+    Radar measure;
+    measure.sweep_data = std::vector<std::uint8_t>(10, 0);
+    ASSERT_TRUE(measure.allZero());
+
+    measure.sweep_data[9] = 1;
+    ASSERT_FALSE(measure.allZero());
+}
