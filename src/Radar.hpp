@@ -44,7 +44,10 @@ namespace radar_base {
         static void updateEchoes(Radar const& radar_echo,
             base::Angle const& yaw_correction,
             std::vector<uint8_t>& world_echoes);
-
+        /**
+         * Checks if at least one echo dot (elements of the \see sweep_data vector) is not
+         * zero
+         */
         bool allZero() const;
     };
 } // namespaces
