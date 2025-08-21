@@ -133,3 +133,13 @@ TEST_F(RadarTest, it_checks_if_measurement_is_zero_or_not)
     measure.sweep_data[9] = 1;
     ASSERT_FALSE(measure.allZero());
 }
+
+TEST_F(RadarTest, it_normalize_the_sweep_data)
+{
+    std::vector<std::uint8_t> sweep_data = {0, 1, 2, 32, 62, 63, 128};
+    Radar::normalizeSpeedMap(sweep_data);
+    std::vector<std::uint8_t> expected_sweep_data = {0, 63, 65, 127, 189, 191, 0};
+    for (unsigned int i = 0; i < sweep_data.size(); i++) {
+        ASSERT_EQ(expected_sweep_data[i], sweep_data[i]);
+    }
+}
