@@ -1,9 +1,9 @@
 #ifndef RADAR_BASE_BASETYPES_HPP
 #define RADAR_BASE_BASETYPES_HPP
 
-#include <base/Time.hpp>
 #include <base/Angle.hpp>
-#include <stdint.h>
+#include <base/Time.hpp>
+#include <cstdint>
 #include <vector>
 
 namespace radar_base {
