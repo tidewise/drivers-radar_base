@@ -112,3 +112,17 @@ bool Radar::allZero() const
         return v != 0;
     });
 }
+
+void Radar::normalizeSpeedMap(std::vector<uint8_t>& speed_map_sweep_data)
+{
+    for (auto& datum : speed_map_sweep_data) {
+        if (datum > 0 && datum <= 82) {
+            auto speed_kt = datum - 32;
+            auto speed = speed_kt / METERS_PER_SECOND2KNOT;
+            datum = round(speed * 4) + 127;
+        }
+        else {
+            datum = 0;
+        }
+    }
+}
