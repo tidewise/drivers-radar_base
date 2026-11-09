@@ -46,6 +46,8 @@ namespace radar_base {
         base::Angle latitude;
         /** Target longitude */
         base::Angle longitude;
+        /** The return of the arpa info get request call */
+        int32_t arpa_info_return = 0;
     };
 
     struct ArpaTargets {
